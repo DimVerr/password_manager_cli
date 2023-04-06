@@ -4,30 +4,31 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package backend
 
 import (
-	"fmt"
-
+	"os"
 	"github.com/spf13/cobra"
 )
+
+var (
+	fileName string
+)
+
+
 
 // intCmd represents the int command
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "file for your credentials",
+	Long: `Json file for your credentials`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("init json backend")
+		createFile()	
 	},
 }
 
 func init() {
-	BackendCmd.AddCommand(initCmd)
 
+	initCmd.Flags().StringVarP(&fileName, "filename", "f", "", "file name for your credentials")
 	// Here you will define your flags and configuration settings.
+	BackendCmd.AddCommand(initCmd)
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
@@ -37,3 +38,14 @@ func init() {
 	// is called directly, e.g.:
 	// intCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
+
+func createFile() {
+	os.Create("credentials.json")
+		if fileName != "" {
+			createFileWithCustomName(fileName)
+		}
+}
+
+func createFileWithCustomName(fileName string) {
+	os.Create(fileName+".json")
+}	
