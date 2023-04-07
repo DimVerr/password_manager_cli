@@ -6,13 +6,24 @@ package backend
 import (
 	"os"
 	"github.com/spf13/cobra"
+	"encoding/json"
 )
 
 var (
 	fileName string
+	author string
 )
 
+type credential struct {
+	Domain string `json:"domain"`
+	Login string `json:"login" `
+	Password string `json:"password"`
+}
 
+type storage struct {
+	Author string `json:"author"`
+	Credentials []credential `json:"credentials"`
+}
 
 // intCmd represents the int command
 var initCmd = &cobra.Command{
@@ -27,6 +38,9 @@ var initCmd = &cobra.Command{
 func init() {
 
 	initCmd.Flags().StringVarP(&fileName, "filename", "f", "", "file name for your credentials")
+	initCmd.Flags().StringVarP(&author, "author", "a", "", "author of the file")
+
+
 	// Here you will define your flags and configuration settings.
 	BackendCmd.AddCommand(initCmd)
 
@@ -40,12 +54,23 @@ func init() {
 }
 
 func createFile() {
-	os.Create("credentials.json")
-		if fileName != "" {
-			createFileWithCustomName(fileName)
-		}
+
+	userCredentials := storage{}
+	
+	userCredentials.Author = author
+
+	finalJson, err := json.MarshalIndent(userCredentials, "", "\t")
+	if err != nil {
+		panic(err)
+	}
+
+	if fileName != "" {
+		os.WriteFile(fileName + ".json", finalJson, 0666)
+		}else{
+		os.WriteFile("credentials.json", finalJson, 0666)
+	}
+
 }
 
-func createFileWithCustomName(fileName string) {
-	os.Create(fileName+".json")
-}	
+
+
