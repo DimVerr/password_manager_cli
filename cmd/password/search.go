@@ -12,37 +12,37 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// deleteCmd represents the delete command
-var deleteCmd = &cobra.Command{
-	Use:   "delete",
-	Short: "Delete file with password",
-	Long: `Delete file with password`,
+// searchCmd represents the search command
+var searchCmd = &cobra.Command{
+	Use:   "search",
+	Short: "Search credentials in file",
+	Long: `Search credentials in file`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("delete called")
+		searchCredentials(utils.Domain , utils.Login, utils.Password)	
 	},
 }
 
 func init() {
-	PasswordCmd.AddCommand(deleteCmd)
+	PasswordCmd.AddCommand(searchCmd)
+
 
 	searchCmd.Flags().StringVarP(&utils.Domain, "domain", "d", "", "user domain")
 	searchCmd.Flags().StringVarP(&utils.Login, "login", "l", "", "user login")
 	searchCmd.Flags().StringVarP(&utils.Password, "password", "p", "", "user password")
-
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// deleteCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// searchCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// deleteCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// searchCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-func deleteCredential() {
+func searchCredentials(domain string, login string , password string) {
 	var creds utils.Storage
-	
+
 	data, err1 := os.ReadFile("credentials.json")
 	if err1 != nil {
 		panic(err1)
@@ -53,12 +53,16 @@ func deleteCredential() {
 		panic(err)
 	}
 
-
-
 	for _, v := range creds.Credentials {
 		if v.Domain == utils.Domain || v.Login == utils.Login || v.Password == utils.Password {
+			fmt.Printf("%v\n", v)
 		}
 	}
 
-}
 
+// 	for i := 0; i < len(creds.Credentials); i++ {
+// 		if creds.Credentials[i].Domain == utils.Domain || creds.Credentials[i].Login == utils.Login ||creds.Credentials[i].Password == utils.Password {
+// 			fmt.Println(creds.Credentials[i])
+// 		}
+// }
+}

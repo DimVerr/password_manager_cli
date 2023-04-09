@@ -8,7 +8,7 @@ import (
 	"os"
 	"password_manager/cmd/backend"
 	"password_manager/cmd/password"
-
+	"password_manager/cmd/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -48,6 +48,8 @@ func init() {
 
 	rootCmd.AddCommand(password.PasswordCmd)
 	rootCmd.AddCommand(backend.BackendCmd)
+	rootCmd.AddCommand(utils.UtilsCmd)
+	
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.password_manager.yaml)")
 

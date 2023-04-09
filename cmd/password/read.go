@@ -5,7 +5,7 @@ package password
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"github.com/spf13/cobra"
 )
 
@@ -15,7 +15,7 @@ var readCmd = &cobra.Command{
 	Short: "Read password from file",
 	Long: `Read password from file`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("read called")
+		ReadPasswordFromFile()
 	},
 }
 
@@ -34,12 +34,6 @@ func init() {
 }
 
 func ReadPasswordFromFile() {
-	var filename string
-
-	fmt.Println("Enter name of file with the password:")
-	fmt.Scan(&filename)
-	bs, _ := ioutil.ReadFile(filename)
-	password := string(bs)
-
-	fmt.Printf("Your password is : %v ", password) 
+	file, _ := os.ReadFile("credentials.json")
+	fmt.Printf("%s\n", file)
 }

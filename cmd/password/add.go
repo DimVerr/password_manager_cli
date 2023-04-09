@@ -6,7 +6,7 @@ package password
 import (
 	"encoding/json"
 	"os"
-
+	"password_manager/cmd/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -16,29 +16,14 @@ var addCmd = &cobra.Command{
 	Short: "add credentials to file",
 	Long: `add credentials to file`,
 	Run: func(cmd *cobra.Command, args []string) {
-		EncodeJson(domain, login, password)	
+		EncodeJson(utils.Domain, utils.Login, utils.Password)	
 	},
-}
-var (
-	domain string
-	login string
-	password string
-)
-type credential struct {
-	Domain string `json:"domain"`
-	Login string `json:"login" `
-	Password string `json:"password"`
-}
-
-type storage struct {
-	Author string `json:"author"`
-	Credentials []credential `json:"credentials"`
 }
 
 func init() {
-	addCmd.Flags().StringVarP(&domain, "domain", "d", "", "user domain")
-	addCmd.Flags().StringVarP(&login, "login", "l", "", "user login")
-	addCmd.Flags().StringVarP(&password, "password", "p", "", "user password")
+	addCmd.Flags().StringVarP(&utils.Domain, "domain", "d", "", "user domain")
+	addCmd.Flags().StringVarP(&utils.Login, "login", "l", "", "user login")
+	addCmd.Flags().StringVarP(&utils.Password, "password", "p", "", "user password")
 	
 	addCmd.MarkFlagRequired("domain")
 	addCmd.MarkFlagRequired("login")
@@ -60,17 +45,20 @@ func init() {
 
 func EncodeJson(domain string, login string, password string) {
 
-	data, _ := os.ReadFile("credentials.json")
+	data, err1 := os.ReadFile("credentials.json")
+	if err1 != nil {
+		panic(err1)
+	}
 
-	var creds storage
+	var creds utils.Storage
 	err := json.Unmarshal(data, &creds)
 
 	if err != nil {
 		panic(err)
 	}
 
-	userCredentials := credential{
-		domain, login, password,
+	userCredentials := utils.Credential{
+		Domain: domain, Login: login, Password: password,
 	}
 
 	creds.Credentials = append(creds.Credentials, userCredentials)

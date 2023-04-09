@@ -4,26 +4,14 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package backend
 
 import (
+	"encoding/json"
+	"fmt"
 	"os"
 	"github.com/spf13/cobra"
-	"encoding/json"
+	"password_manager/cmd/utils"
 )
 
-var (
-	fileName string
-	author string
-)
 
-type credential struct {
-	Domain string `json:"domain"`
-	Login string `json:"login" `
-	Password string `json:"password"`
-}
-
-type storage struct {
-	Author string `json:"author"`
-	Credentials []credential `json:"credentials"`
-}
 
 // intCmd represents the int command
 var initCmd = &cobra.Command{
@@ -31,14 +19,15 @@ var initCmd = &cobra.Command{
 	Short: "file for your credentials",
 	Long: `Json file for your credentials`,
 	Run: func(cmd *cobra.Command, args []string) {
-		createFile()	
+		createExistingFile()	
 	},
 }
 
 func init() {
 
-	initCmd.Flags().StringVarP(&fileName, "filename", "f", "", "file name for your credentials")
-	initCmd.Flags().StringVarP(&author, "author", "a", "", "author of the file")
+	initCmd.Flags().StringVarP(&utils.FileName, "filename", "f", "", "file name for your credentials")
+	initCmd.Flags().StringVarP(&utils.Author, "author", "a", "", "author of the file")
+	initCmd.Flags().StringVarP(&utils.Create, "create", "c", "", "insert 1 to the flag argument to create file in any way")
 
 
 	// Here you will define your flags and configuration settings.
@@ -55,22 +44,33 @@ func init() {
 
 func createFile() {
 
-	userCredentials := storage{}
+	userCredentials := utils.Storage{}
 	
-	userCredentials.Author = author
+	userCredentials.Author = utils.Author
 
 	finalJson, err := json.MarshalIndent(userCredentials, "", "\t")
 	if err != nil {
 		panic(err)
 	}
 
-	if fileName != "" {
-		os.WriteFile(fileName + ".json", finalJson, 0666)
+	if utils.FileName != "" {
+		os.WriteFile(utils.FileName + ".json", finalJson, 0666)
 		}else{
 		os.WriteFile("credentials.json", finalJson, 0666)
 	}
 
 }
 
+func createExistingFile() {
+	_ , err := os.ReadFile("credentials.json")
+	if err != nil {
+		createFile()
+	}else if err == nil && utils.Create == "1"{
+		createFile()
+	}else {
+		fmt.Println("File is already existing")
+		os.Exit(1)
+	}
+}
 
 
