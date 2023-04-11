@@ -18,16 +18,14 @@ var deleteCmd = &cobra.Command{
 	Short: "Delete file with password",
 	Long: `Delete file with password`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("delete called")
+		deleteCredential(name)
 	},
 }
 
 func init() {
 	PasswordCmd.AddCommand(deleteCmd)
 
-	searchCmd.Flags().StringVarP(&utils.Domain, "domain", "d", "", "user domain")
-	searchCmd.Flags().StringVarP(&utils.Login, "login", "l", "", "user login")
-	searchCmd.Flags().StringVarP(&utils.Password, "password", "p", "", "user password")
+	deleteCmd.Flags().StringVarP(&name, "name", "n", "", "name of your credentials")
 
 	// Here you will define your flags and configuration settings.
 
@@ -40,7 +38,7 @@ func init() {
 	// deleteCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-func deleteCredential() {
+func deleteCredential(name string) {
 	var creds utils.Storage
 	
 	data, err1 := os.ReadFile("credentials.json")
@@ -53,12 +51,23 @@ func deleteCredential() {
 		panic(err)
 	}
 
-
-
-	for _, v := range creds.Credentials {
-		if v.Domain == utils.Domain || v.Login == utils.Login || v.Password == utils.Password {
+	for i :=0; i < len(creds.Credentials); i++ {
+		if creds.Credentials[i].Name == name {
+			creds.Credentials = append(creds.Credentials[:i],creds.Credentials[i+1:]... )
+		} else if len(creds.Credentials) == 0{
+			fmt.Println("There are no credentials in file")
+			os.Exit(1)
+		}else{
+			fmt.Println("Wrong credentials name")
+			os.Exit(1)
 		}
 	}
 
+	finalJson, err := json.MarshalIndent(creds, "", "\t")
+	if err != nil {
+		panic(err)
+	}
+	
+	os.WriteFile("credentials.json", finalJson, 0666)
 }
 

@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"os"
 	"password_manager/cmd/utils"
-
 	"github.com/spf13/cobra"
 )
+
 
 // editCmd represents the edit command
 var editCmd = &cobra.Command{
@@ -18,19 +18,21 @@ var editCmd = &cobra.Command{
 	Short: "Edit credentials in file",
 	Long: `Edit credentials in file`,
 	Run: func(cmd *cobra.Command, args []string) {
-		editCredentials(utils.Domain, utils.Login, utils.Password, utils.NewDomain, utils.NewLogin, utils.NewPassword)
+		editCredentials(name, domain, login, password, newName, newDomain, newLogin, newPassword)
 	},
 }
 
 func init() {
 	PasswordCmd.AddCommand(editCmd)
 
-	editCmd.Flags().StringVarP(&utils.Domain, "domain", "d", "", "user domain")
-	editCmd.Flags().StringVarP(&utils.Login, "login", "l", "", "user login")
-	editCmd.Flags().StringVarP(&utils.Password, "password", "p", "", "user password")
-	editCmd.Flags().StringVarP(&utils.NewDomain, "newdomain", "a", "", "new user domain")
-	editCmd.Flags().StringVarP(&utils.NewLogin, "newlogin", "b", "", "new user login")
-	editCmd.Flags().StringVarP(&utils.NewPassword, "newpassword", "c", "", "new user password")
+	editCmd.Flags().StringVarP(&name, "name", "n", "", "name for credentials")
+	editCmd.Flags().StringVarP(&domain, "domain", "d", "", "user domain")
+	editCmd.Flags().StringVarP(&login, "login", "l", "", "user login")
+	editCmd.Flags().StringVarP(&password, "password", "p", "", "user password")
+	editCmd.Flags().StringVarP(&newName, "newname", "", "", "new name for credentials")
+	editCmd.Flags().StringVarP(&newDomain, "newdomain", "", "", "new user domain")
+	editCmd.Flags().StringVarP(&newLogin, "newlogin", "", "", "new user login")
+	editCmd.Flags().StringVarP(&newPassword, "newpassword", "", "", "new user password")
 
 
 	// Here you will define your flags and configuration settings.
@@ -44,7 +46,7 @@ func init() {
 	// editCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-func editCredentials(domain string, login string , password string, newdomain string, newlogin string, newpassword string) {
+func editCredentials(name string, domain string, login string , password string, newname string, newdomain string, newlogin string, newpassword string) {
 	var Creds utils.Storage
 
 	data, err1 := os.ReadFile("credentials.json")
@@ -58,35 +60,46 @@ func editCredentials(domain string, login string , password string, newdomain st
 	}
 
 	for i := 0; i < len(Creds.Credentials); i++ {
-		if Creds.Credentials[i].Domain == domain && Creds.Credentials[i].Login == login && Creds.Credentials[i].Password == password{
-			Creds.Credentials[i].Domain = newdomain
-			Creds.Credentials[i].Login = newlogin
-			Creds.Credentials[i].Password = newpassword
+		if newname == Creds.Credentials[i].Name{
+			fmt.Println("Name is already used")
+			os.Exit(1)
 		}else {
-			fmt.Println("Wrong credentials")
-			break
+			continue
 		}
 	}
 
-	// for _,v := range creds.Credentials{
-	// 	if v.Domain == domain {
-	// 		v.Domain = newdomain
-	// 	}else {
-	// 		fmt.Println("Domain does not exist")			
-	// 	}
-	// }
 
-	// for i := 0; i < len(creds.Credentials); i++ {
-	// 	if creds.Credentials[i].Login == login {
-	// 		creds.Credentials[i].Login = newlogin
-	// 	}
-	// }
+	for i := 0; i < len(Creds.Credentials); i++ {
+		if Creds.Credentials[i].Name == name && newname != ""{
+			Creds.Credentials[i].Name = newname			
+		}else {
+			continue
+		}
+	}
 
-	// for i := 0; i < len(creds.Credentials); i++ {
-	// 	if creds.Credentials[i].Password == password{
-	// 		creds.Credentials[i].Password = newpassword
-	// 	}
-	// }
+	for i := 0; i < len(Creds.Credentials); i++ {
+		if Creds.Credentials[i].Name == name && newdomain != "" && domain !=""{
+			Creds.Credentials[i].Domain = newdomain			
+		}else {
+			continue
+		}
+	}
+
+	for i := 0; i < len(Creds.Credentials); i++ {
+		if Creds.Credentials[i].Name == name && newlogin != "" && login !=""{
+			Creds.Credentials[i].Login = newlogin		
+		}else {
+			continue
+		}
+	}
+
+	for i := 0; i < len(Creds.Credentials); i++ {
+		if Creds.Credentials[i].Name == name && newpassword != "" && password != ""{
+			Creds.Credentials[i].Password = newpassword			
+		}else {
+			continue
+		}
+	}
 	
 	finalJson, err := json.MarshalIndent(Creds, "", "\t")
 	if err != nil {

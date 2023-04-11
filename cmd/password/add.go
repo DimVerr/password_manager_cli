@@ -5,8 +5,10 @@ package password
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"password_manager/cmd/utils"
+
 	"github.com/spf13/cobra"
 )
 
@@ -16,15 +18,17 @@ var addCmd = &cobra.Command{
 	Short: "add credentials to file",
 	Long: `add credentials to file`,
 	Run: func(cmd *cobra.Command, args []string) {
-		EncodeJson(utils.Domain, utils.Login, utils.Password)	
+		EncodeJson(name, domain, login, password)	
 	},
 }
 
 func init() {
-	addCmd.Flags().StringVarP(&utils.Domain, "domain", "d", "", "user domain")
-	addCmd.Flags().StringVarP(&utils.Login, "login", "l", "", "user login")
-	addCmd.Flags().StringVarP(&utils.Password, "password", "p", "", "user password")
-	
+	addCmd.Flags().StringVarP(&name, "name", "n", "", "name for credentials")
+	addCmd.Flags().StringVarP(&domain, "domain", "d", "", "user domain")
+	addCmd.Flags().StringVarP(&login, "login", "l", "", "user login")
+	addCmd.Flags().StringVarP(&password, "password", "p", "", "user password")
+
+	addCmd.MarkFlagRequired("name")
 	addCmd.MarkFlagRequired("domain")
 	addCmd.MarkFlagRequired("login")
 	addCmd.MarkFlagRequired("password")
@@ -43,8 +47,8 @@ func init() {
 }
 
 
-func EncodeJson(domain string, login string, password string) {
-
+func EncodeJson(name string, domain string, login string, password string) {
+	
 	data, err1 := os.ReadFile("credentials.json")
 	if err1 != nil {
 		panic(err1)
@@ -57,8 +61,15 @@ func EncodeJson(domain string, login string, password string) {
 		panic(err)
 	}
 
+	for _,v := range creds.Credentials{
+		if v.Name == name {
+			fmt.Println("Name is already used")
+			os.Exit(1)
+		}
+	}
+
 	userCredentials := utils.Credential{
-		Domain: domain, Login: login, Password: password,
+		Name: name, Domain: domain, Login: login, Password: password,
 	}
 
 	creds.Credentials = append(creds.Credentials, userCredentials)
@@ -69,12 +80,5 @@ func EncodeJson(domain string, login string, password string) {
 	}
 	
 	os.WriteFile("credentials.json", finalJson, 0666)
-	
-	// finalJson, err := json.MarshalIndent(userCredentials, "", "\t")
-	// if err != nil {
-	// 	panic(err)
-	// }
-	
-	// os.WriteFile("credentials.json", finalJson, 0666)
 
 }

@@ -12,7 +12,6 @@ import (
 )
 
 
-
 // intCmd represents the int command
 var initCmd = &cobra.Command{
 	Use:   "init",
@@ -25,9 +24,9 @@ var initCmd = &cobra.Command{
 
 func init() {
 
-	initCmd.Flags().StringVarP(&utils.FileName, "filename", "f", "", "file name for your credentials")
-	initCmd.Flags().StringVarP(&utils.Author, "author", "a", "", "author of the file")
-	initCmd.Flags().StringVarP(&utils.Create, "create", "c", "", "insert 1 to the flag argument to create file in any way")
+	initCmd.Flags().StringVarP(&fileName, "filename", "f", "", "file name for your credentials")
+	initCmd.Flags().StringVarP(&author, "author", "a", "", "author of the file")
+	initCmd.Flags().BoolVarP(&create, "create", "c", false, "insert true to the flag argument to create file in any way")
 
 
 	// Here you will define your flags and configuration settings.
@@ -46,15 +45,15 @@ func createFile() {
 
 	userCredentials := utils.Storage{}
 	
-	userCredentials.Author = utils.Author
+	userCredentials.Author = author
 
 	finalJson, err := json.MarshalIndent(userCredentials, "", "\t")
 	if err != nil {
 		panic(err)
 	}
 
-	if utils.FileName != "" {
-		os.WriteFile(utils.FileName + ".json", finalJson, 0666)
+	if fileName != "" {
+		os.WriteFile(fileName + ".json", finalJson, 0666)
 		}else{
 		os.WriteFile("credentials.json", finalJson, 0666)
 	}
@@ -65,7 +64,7 @@ func createExistingFile() {
 	_ , err := os.ReadFile("credentials.json")
 	if err != nil {
 		createFile()
-	}else if err == nil && utils.Create == "1"{
+	}else if err == nil && create{
 		createFile()
 	}else {
 		fmt.Println("File is already existing")

@@ -9,6 +9,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	fileName string
+	author string
+	create bool
+)
 // backendCmd represents the backend command
 var BackendCmd = &cobra.Command{
 	Use:   "backend",

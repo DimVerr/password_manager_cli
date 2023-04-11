@@ -10,6 +10,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	name string
+	domain string
+	login string
+	password string
+	newName string
+	newDomain string
+	newLogin string
+	newPassword string
+)
+
 // passwordCmd represents the password command
 var PasswordCmd = &cobra.Command{
 	Use:   "password",

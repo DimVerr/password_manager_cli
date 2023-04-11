@@ -12,23 +12,23 @@ import (
 	"github.com/spf13/cobra"
 )
 
+
 // searchCmd represents the search command
 var searchCmd = &cobra.Command{
 	Use:   "search",
 	Short: "Search credentials in file",
 	Long: `Search credentials in file`,
 	Run: func(cmd *cobra.Command, args []string) {
-		searchCredentials(utils.Domain , utils.Login, utils.Password)	
+		searchCredentials(domain , login, password)	
 	},
 }
 
 func init() {
 	PasswordCmd.AddCommand(searchCmd)
 
-
-	searchCmd.Flags().StringVarP(&utils.Domain, "domain", "d", "", "user domain")
-	searchCmd.Flags().StringVarP(&utils.Login, "login", "l", "", "user login")
-	searchCmd.Flags().StringVarP(&utils.Password, "password", "p", "", "user password")
+	searchCmd.Flags().StringVarP(&name, "name", "n", "", "name for credentials")
+	searchCmd.Flags().StringVarP(&domain, "domain", "d", "", "user domain")
+	
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
@@ -54,15 +54,9 @@ func searchCredentials(domain string, login string , password string) {
 	}
 
 	for _, v := range creds.Credentials {
-		if v.Domain == utils.Domain || v.Login == utils.Login || v.Password == utils.Password {
-			fmt.Printf("%v\n", v)
+		if v.Name == name || v.Domain == domain {
+			fmt.Printf("Name : %s\nDomain : %s\nLogin : %s\nPassword : %s\n\n", v.Name, v.Domain, v.Login, v.Password)
 		}
 	}
 
-
-// 	for i := 0; i < len(creds.Credentials); i++ {
-// 		if creds.Credentials[i].Domain == utils.Domain || creds.Credentials[i].Login == utils.Login ||creds.Credentials[i].Password == utils.Password {
-// 			fmt.Println(creds.Credentials[i])
-// 		}
-// }
 }

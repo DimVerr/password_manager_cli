@@ -9,19 +9,9 @@ import (
 
 	"github.com/spf13/cobra"
 )
-var (
-	FileName string
-	Author string
-	Create string
-	Domain string
-	Login string
-	Password string
-	NewDomain string
-	NewLogin string
-	NewPassword string
-)
 
 type Credential struct {
+	Name string `json:"name"`
 	Domain string `json:"domain"`
 	Login string `json:"login" `
 	Password string `json:"password"`

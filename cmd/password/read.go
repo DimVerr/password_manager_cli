@@ -4,8 +4,11 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package password
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
+	"password_manager/cmd/utils"
+
 	"github.com/spf13/cobra"
 )
 
@@ -34,6 +37,20 @@ func init() {
 }
 
 func ReadPasswordFromFile() {
-	file, _ := os.ReadFile("credentials.json")
-	fmt.Printf("%s\n", file)
+
+	data, err1 := os.ReadFile("credentials.json")
+	if err1 != nil {
+		panic(err1)
+	}
+
+	var creds utils.Storage
+
+	err := json.Unmarshal(data, &creds)
+	if err != nil {
+		panic(err1)
+	}
+
+	for _, v := range creds.Credentials {
+			fmt.Printf("Name : %s\nDomain : %s\nLogin : %s\nPassword : %s\n\n", v.Name, v.Domain, v.Login, v.Password)
+	}
 }
