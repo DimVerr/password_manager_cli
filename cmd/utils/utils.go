@@ -1,6 +1,5 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
 */
 package utils
 
@@ -16,6 +15,7 @@ type Credential struct {
 	Login string `json:"login" `
 	Password string `json:"password"`
 }
+
 
 type Storage struct {
 	Author string `json:"author"`

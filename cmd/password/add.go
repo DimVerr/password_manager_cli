@@ -82,3 +82,4 @@ func EncodeJson(name string, domain string, login string, password string) {
 	os.WriteFile("credentials.json", finalJson, 0666)
 
 }
+

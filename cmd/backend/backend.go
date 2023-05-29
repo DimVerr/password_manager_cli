@@ -12,7 +12,8 @@ import (
 var (
 	fileName string
 	author string
-	create bool
+	jsonfile bool
+	dbfile bool
 )
 // backendCmd represents the backend command
 var BackendCmd = &cobra.Command{

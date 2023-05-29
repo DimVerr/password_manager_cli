@@ -7,10 +7,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"github.com/spf13/cobra"
 	"password_manager/cmd/utils"
-)
 
+	"github.com/spf13/cobra"
+)
 
 // intCmd represents the int command
 var initCmd = &cobra.Command{
@@ -26,7 +26,8 @@ func init() {
 
 	initCmd.Flags().StringVarP(&fileName, "filename", "f", "", "file name for your credentials")
 	initCmd.Flags().StringVarP(&author, "author", "a", "", "author of the file")
-	initCmd.Flags().BoolVarP(&create, "create", "c", false, "insert true to the flag argument to create file in any way")
+	initCmd.Flags().BoolVarP(&jsonfile, "jsonfile", "j", false, "insert true to the flag argument to create json file in any way")
+	initCmd.Flags().BoolVarP(&dbfile, "dbfile", "d", false, "insert true to the flag argument to create dbfile in any way")
 
 
 	// Here you will define your flags and configuration settings.
@@ -41,7 +42,7 @@ func init() {
 	// intCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-func createFile() {
+func createJsonFile() {
 
 	userCredentials := utils.Storage{}
 	
@@ -63,13 +64,16 @@ func createFile() {
 func createExistingFile() {
 	_ , err := os.ReadFile("credentials.json")
 	if err != nil {
-		createFile()
-	}else if err == nil && create{
-		createFile()
+		createJsonFile()
+	}else if err == nil && jsonfile{
+		createJsonFile()
 	}else {
 		fmt.Println("File is already existing")
 		os.Exit(1)
 	}
 }
 
-
+  
+  func main() {
+	
+  }

@@ -12,14 +12,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-
 // searchCmd represents the search command
 var searchCmd = &cobra.Command{
 	Use:   "search",
 	Short: "Search credentials in file",
 	Long: `Search credentials in file`,
 	Run: func(cmd *cobra.Command, args []string) {
-		searchCredentials(domain , login, password)	
+		searchCredentials(name, domain)	
 	},
 }
 
@@ -40,7 +39,7 @@ func init() {
 	// searchCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-func searchCredentials(domain string, login string , password string) {
+func searchCredentials(name string, domain string) {
 	var creds utils.Storage
 
 	data, err1 := os.ReadFile("credentials.json")
@@ -60,3 +59,4 @@ func searchCredentials(domain string, login string , password string) {
 	}
 
 }
+
