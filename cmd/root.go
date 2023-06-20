@@ -7,10 +7,9 @@ import (
 	"fmt"
 	"os"
 	"password_manager/cmd/backend"
-	"password_manager/cmd/hp"
-	"password_manager/cmd/password"
+	"password_manager/cmd/credentials"
+	"password_manager/cmd/auth"
 	"password_manager/cmd/utils"
-
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -29,7 +28,7 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Run: func(cmd *cobra.Command, args []string) {},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -48,10 +47,11 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.AddCommand(password.PasswordCmd)
+	rootCmd.AddCommand(credentials.CredentialsCmd)
 	rootCmd.AddCommand(backend.BackendCmd)
 	rootCmd.AddCommand(utils.UtilsCmd)
-	rootCmd.AddCommand(hp.HpCmd)
+	rootCmd.AddCommand(auth.AuthCmd)
+
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.password_manager.yaml)")
 

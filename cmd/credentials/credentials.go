@@ -2,7 +2,7 @@
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 
 */
-package password
+package credentials
 
 import (
 	"fmt"
@@ -11,23 +11,24 @@ import (
 )
 
 var (
-	name string
+	credID uint
+	credName string
 	domain string
 	login string
 	password string
-	newName string
+	newCredName string
 	newDomain string
 	newLogin string
 	newPassword string
 )
 
 // passwordCmd represents the password command
-var PasswordCmd = &cobra.Command{
-	Use:   "password",
-	Short: "Password",
-	Long: `Password`,
+var CredentialsCmd = &cobra.Command{
+	Use:   "credentials",
+	Short: "credentials block",
+	Long: `credentials block`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("password called")
+		fmt.Println("Call one of following commands: `create`, `update`, `delete`, `search` or `read`")
 	},
 }
 

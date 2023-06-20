@@ -9,12 +9,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	fileName string
-	author string
-	jsonfile bool
-	dbfile bool
-)
 // backendCmd represents the backend command
 var BackendCmd = &cobra.Command{
 	Use:   "backend",
