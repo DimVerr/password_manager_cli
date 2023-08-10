@@ -52,4 +52,5 @@ func UpdateCreds(){
 	}
 	
 	fmt.Println("Your credentials were updated successfully.")
+
 }

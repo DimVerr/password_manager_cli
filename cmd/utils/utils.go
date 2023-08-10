@@ -53,6 +53,7 @@ func ConnectToDB() *gorm.DB{
 	DB_PORT := os.Getenv("DB_PORT")
 	if DB_HOST == "" || DB_USER == "" || DB_PASSWORD == "" || DB_NAME =="" || DB_PORT =="" {
 		fmt.Println("Please add your db data to .env file.")
+
 		os.Exit(1)
 	}
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT)
@@ -60,6 +61,7 @@ func ConnectToDB() *gorm.DB{
 	if err != nil {
 		fmt.Println("failed to connect database.")
 		os.Exit(1)
+
 	}
 
 	db.AutoMigrate(&User{}, &Credential{})
