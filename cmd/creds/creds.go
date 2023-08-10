@@ -19,10 +19,10 @@ var (
 )
 
 var CredsCmd = &cobra.Command{
-	Use:   "credentials",
-	Short: "Credentials commands (create, update, delete, getAll, getOne)",
-	Long: `Credentials commands (create, update, delete, getAll, getOne)`,
+	Use:   "creds",
+	Short: "Creds commands (create, update, delete, getAll, getOne)",
+	Long: `Creds commands (create, update, delete, getAll, getOne)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Call one of following commands: `create`, `update`, `delete`, `getAll` or `getOne`")
+		fmt.Println("Call one of following commands: `create`, `update`, `delete`, `getAll` or `getOne`.")
 	},
 }

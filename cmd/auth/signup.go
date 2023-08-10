@@ -28,13 +28,13 @@ func init() {
 func SignUp() {
 	db := utils.ConnectToDB()
 	if userName == "" || userPassword ==""{
-		fmt.Println("Insert name and password as flags")
+		fmt.Println("Insert name and password as flags.")
 		os.Exit(1)
 	}
 	resultSignUp := db.Create(&utils.User{Name: userName, Password: userPassword})
 	if resultSignUp.Error != nil {
-		fmt.Println("Username is already used")
+		fmt.Println("Username is already used.")
 		os.Exit(1)
 	}
-	fmt.Println("You are successfulyy signed up. Run `login` command to be able to interact with another commands")
+	fmt.Println("You are successfulyy signed up. Run `login` command to be able to interact with another commands.")
 }
