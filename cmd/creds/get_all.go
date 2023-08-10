@@ -30,12 +30,14 @@ creds := []utils.Credential{}
 
 resultCreds := db.Select("id", "user_id", "cred_name", "domain", "login", "password").Where("user_id = ?", userID).Find(&creds)
 if resultCreds.Error != nil{
-    fmt.Println("Error ocured while searching creds")
+    fmt.Println("Error ocured while searching creds.")
+
 	os.Exit(1)
 }
 
 if len(creds) == 0{
-    fmt.Println("User has no credentials")
+    fmt.Println("User has no credentials.")
+
     os.Exit(1)
 }
 

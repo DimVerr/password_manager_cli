@@ -19,12 +19,14 @@ var createCmd = &cobra.Command{
 }
 
 func init() {
-	createCmd.Flags().StringVarP(&credName, "credName", "c", "", "name for credentials")
+	createCmd.Flags().StringVarP(&credName, "name", "n", "", "name for credentials")
+
 	createCmd.Flags().StringVarP(&domain, "domain", "d", "", "domain")
 	createCmd.Flags().StringVarP(&login, "login", "l", "", "login")
 	createCmd.Flags().StringVarP(&password, "password", "p", "", "password")
 
-	createCmd.MarkFlagRequired("credName")
+	createCmd.MarkFlagRequired("name")
+
 	createCmd.MarkFlagRequired("domain")
 	createCmd.MarkFlagRequired("login")
 	createCmd.MarkFlagRequired("password")
@@ -38,9 +40,10 @@ func AddCredsToDB() {
 
 	resultAdd := db.Create(&utils.Credential{UserID: userID, CredName: credName, Domain: domain, Login: login, Password: password})
 	if resultAdd.Error != nil {
-		fmt.Println("Impossible to create credentials")
+		fmt.Println("Impossible to create credentials.")
 		os.Exit(1)
 	}
 	
-	fmt.Println("Your credentials were added successfully")
+	fmt.Println("Your credentials were added successfully.")
+
 }

@@ -41,7 +41,9 @@ func ConnectToDB() *gorm.DB{
 	var err error
 	errEnv := godotenv.Load()
 	if errEnv != nil {
-	  panic("Failed to load .env file")
+		fmt.Println("Failed to load .env file.")
+		os.Exit(1)
+
 	}
 	
 	DB_HOST := os.Getenv("DB_HOST")
@@ -50,13 +52,16 @@ func ConnectToDB() *gorm.DB{
 	DB_NAME := os.Getenv("DB_NAME")
 	DB_PORT := os.Getenv("DB_PORT")
 	if DB_HOST == "" || DB_USER == "" || DB_PASSWORD == "" || DB_NAME =="" || DB_PORT =="" {
-		fmt.Println("Please add your db data to .env file")
+		fmt.Println("Please add your db data to .env file.")
+
 		os.Exit(1)
 	}
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-	  panic("failed to connect database")
+		fmt.Println("failed to connect database.")
+		os.Exit(1)
+
 	}
 
 	db.AutoMigrate(&User{}, &Credential{})

@@ -51,5 +51,6 @@ func UpdateCreds(){
 		os.Exit(1)
 	}
 	
-	fmt.Println("Your credentials were updated successfully")
+	fmt.Println("Your credentials were updated successfully.")
+
 }

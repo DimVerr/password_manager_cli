@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -31,51 +30,42 @@ func Login() {
 	db := utils.ConnectToDB()
 	resultName := db.First(&utils.User{}, "name = ?", userName)
 	if resultName.Error != nil {
-	  fmt.Println("Invalid username")
+	  fmt.Println("Invalid username.")
+
 	  os.Exit(1)
 	} 
   
 	resultPassword := db.First(&utils.User{}, "password = ?", userPassword).Where("name =?", userName)
 	if resultPassword.Error != nil {
-	  fmt.Println("Invalid password")
+	  fmt.Println("Invalid password.")
+
 	  os.Exit(1)
 	}
 	db.Model(&utils.User{}).Where("name =? and password =?", userName, userPassword).Pluck("id", &userID)
 	UserRefer, err := json.MarshalIndent(userID, "", "/t")
 	if err != nil {
-		fmt.Println("Impossible to extract user ID")
+		fmt.Println("Impossible to extract user ID.")
 	}
-	encodedStr := base64.StdEncoding.EncodeToString(UserRefer)
 
-	err1 := os.WriteFile("UserID", []byte(encodedStr), 0644)
+	err1 := os.WriteFile("UserID", UserRefer, 0644)
 	if err1 != nil{
-		fmt.Println("Impossible to extract user ID")
+		fmt.Println("Impossible to extract user ID.")
 	}
-	fmt.Println("You are sucessfully logged in")
+	fmt.Println("You are sucessfully logged in.")
+
 }
 
 func CheckLogin() uint{
 
 	uid, err := os.ReadFile("UserID") 
 	if err != nil {
-		fmt.Println("You are not logged in. Please log in with `login` command")
+		fmt.Println("You are not logged in. Please log in with `login` command.")
+
 		os.Exit(1)
 	}else {
 		err := json.Unmarshal(uid, &userID)
 		if err != nil {
-			fmt.Println("Impossible to extract UserID from file")
-			os.Exit(1)
-		}
-		idStr := string(userID)
-		decodedID, err := base64.StdEncoding.DecodeString(idStr)
-		if err != nil {
-			fmt.Println("Impossible to extract UserID from file")
-			os.Exit(1)
-		}
-		
-		err1 := json.Unmarshal(decodedID, &userID)
-		if err1 != nil {
-			fmt.Println("Impossible to extract UserID from file")
+			fmt.Println("Impossible to extract UserID.")
 			os.Exit(1)
 		}
 	}

@@ -34,7 +34,8 @@ cred := utils.Credential{}
 
 resultSearch := db.Select("id", "user_id", "cred_name", "domain", "login", "password").Where("user_id = ? AND id = ?", userID, credID).First(&cred)
 if resultSearch.Error != nil {
-	fmt.Println("Wrong credID")
+	fmt.Println("Wrong credentials ID.")
+
 	os.Exit(1)
 }
 
