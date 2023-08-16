@@ -31,12 +31,14 @@ func Login() {
 	resultName := db.First(&utils.User{}, "name = ?", userName)
 	if resultName.Error != nil {
 	  fmt.Println("Invalid username.")
+
 	  os.Exit(1)
 	} 
   
 	resultPassword := db.First(&utils.User{}, "password = ?", userPassword).Where("name =?", userName)
 	if resultPassword.Error != nil {
 	  fmt.Println("Invalid password.")
+
 	  os.Exit(1)
 	}
 	db.Model(&utils.User{}).Where("name =? and password =?", userName, userPassword).Pluck("id", &userID)
@@ -50,6 +52,7 @@ func Login() {
 		fmt.Println("Impossible to extract user ID.")
 	}
 	fmt.Println("You are sucessfully logged in.")
+
 }
 
 func CheckLogin() uint{
@@ -57,6 +60,7 @@ func CheckLogin() uint{
 	uid, err := os.ReadFile("UserID") 
 	if err != nil {
 		fmt.Println("You are not logged in. Please log in with `login` command.")
+
 		os.Exit(1)
 	}else {
 		err := json.Unmarshal(uid, &userID)

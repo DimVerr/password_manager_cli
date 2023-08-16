@@ -17,6 +17,7 @@ var rootCmd = &cobra.Command{
 	Short: "Password manager will help you to store your users and their credentials in easy way",
 	Long: `Password manager allows you to create, update, delete and show your credentials. For example:
 	Call "password_manager help" command to see available blocks`,
+
 	Run: func(cmd *cobra.Command, args []string) {},
 }
 

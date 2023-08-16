@@ -20,11 +20,13 @@ var createCmd = &cobra.Command{
 
 func init() {
 	createCmd.Flags().StringVarP(&credName, "name", "n", "", "name for credentials")
+
 	createCmd.Flags().StringVarP(&domain, "domain", "d", "", "domain")
 	createCmd.Flags().StringVarP(&login, "login", "l", "", "login")
 	createCmd.Flags().StringVarP(&password, "password", "p", "", "password")
 
 	createCmd.MarkFlagRequired("name")
+
 	createCmd.MarkFlagRequired("domain")
 	createCmd.MarkFlagRequired("login")
 	createCmd.MarkFlagRequired("password")
@@ -43,4 +45,5 @@ func AddCredsToDB() {
 	}
 	
 	fmt.Println("Your credentials were added successfully.")
+
 }
