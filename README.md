@@ -1,6 +1,6 @@
 # Password Manager 
 
-Password Manager allows you to create and store your users and credentials in your  databases using CLI in Docker container
+Password Manager allows you to create and store your users and credentials in your  databases using CLI in Docker container.
 
 ## Installation
 
@@ -11,7 +11,7 @@ Password Manager allows you to create and store your users and credentials in yo
 3. Set up your own environment variables.
 
 ## Usage
-1. Launch Docker 
+1. Launch Docker  app.
 
 2. Run the command to create a container.
 ```golang
@@ -24,7 +24,7 @@ docker-compose up
 
 4. Open the terminal in a created container in Docker app.
 
-5. Run the command to see detailed info and available commands
+5. Run the command to see detailed info and available commands.
 ```golang
 password_manager help
 ```
